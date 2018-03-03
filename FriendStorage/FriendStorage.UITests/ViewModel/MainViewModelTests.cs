@@ -1,8 +1,4 @@
-﻿using FriendStorage.Model;
-using FriendStorage.UI.DataProvider;
-using FriendStorage.UI.ViewModel;
-using System.Collections.Generic;
-using System.Linq;
+﻿using FriendStorage.UI.ViewModel;
 using Xunit;
 
 namespace FriendStorage.UITests.ViewModel
