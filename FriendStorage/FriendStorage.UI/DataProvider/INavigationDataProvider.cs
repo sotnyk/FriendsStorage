@@ -9,6 +9,6 @@ namespace FriendStorage.UI.DataProvider
 {
     public interface INavigationDataProvider
     {
-        IEnumerable<Friend> GetAllFriends();
+        IEnumerable<LookupItem> GetAllFriends();
     }
 }

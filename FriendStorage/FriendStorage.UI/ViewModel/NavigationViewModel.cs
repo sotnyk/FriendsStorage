@@ -24,6 +24,6 @@ namespace FriendStorage.UI.ViewModel
             }
         }
 
-        public ObservableCollection<Friend> Friends { get; } = new ObservableCollection<Friend>();
+        public ObservableCollection<LookupItem> Friends { get; } = new ObservableCollection<LookupItem>();
     }
 }
