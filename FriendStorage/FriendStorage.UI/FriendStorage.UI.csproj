@@ -71,6 +71,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataProvider\FriendDataProvider.cs" />
+    <Compile Include="DataProvider\IFriendDataProvider.cs" />
     <Compile Include="DataProvider\INavigationDataProvider.cs" />
     <Compile Include="DataProvider\NavigationDataProvider.cs" />
     <Compile Include="Events\OpenFriendEditViewEvent.cs" />

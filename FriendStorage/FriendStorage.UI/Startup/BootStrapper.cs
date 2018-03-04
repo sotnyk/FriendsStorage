@@ -3,6 +3,7 @@ using FriendStorage.DataAccess;
 using FriendStorage.UI.DataProvider;
 using FriendStorage.UI.View;
 using FriendStorage.UI.ViewModel;
+using Prism.Events;
 
 namespace FriendStorage.UI.Startup
 {
@@ -17,6 +18,9 @@ namespace FriendStorage.UI.Startup
             builder.RegisterType<FileDataService>().AsImplementedInterfaces();
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf();
+            builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
+            builder.RegisterType<FriendDataProvider>().AsImplementedInterfaces();
+            builder.RegisterType<FriendEditViewModel>().AsImplementedInterfaces();
 
             return builder.Build();
         }
