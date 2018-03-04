@@ -2,6 +2,7 @@
 using FriendStorage.UI.DataProvider;
 using FriendStorage.UI.ViewModel;
 using Moq;
+using Prism.Events;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -10,7 +11,7 @@ namespace FriendStorage.UITests.ViewModel
 {
     public class NavigationViewModelTests
     {
-        INavigationDataProvider ConstructMock()
+        INavigationDataProvider ConstructNavigationDataProviderMock()
         {
             var navigationDataProviderMock = new Mock<INavigationDataProvider>();
             navigationDataProviderMock.Setup(dp => dp.GetAllFriends())
@@ -22,10 +23,15 @@ namespace FriendStorage.UITests.ViewModel
             return navigationDataProviderMock.Object;
         }
 
+        Mock<IEventAggregator> ConstructIAMock()
+        {
+            return new Mock<IEventAggregator>();
+        }
+
         [Fact]
         public void ShouldLoadFriends()
         {
-            var viewModel = new NavigationViewModel(ConstructMock());
+            var viewModel = new NavigationViewModel(ConstructNavigationDataProviderMock(), ConstructIAMock().Object);
             viewModel.Load();
             Assert.Equal(2, viewModel.Friends.Count);
 
@@ -37,7 +43,7 @@ namespace FriendStorage.UITests.ViewModel
         [Fact]
         public void ShouldLoadFriendsOnlyOnce()
         {
-            var viewModel = new NavigationViewModel(ConstructMock());
+            var viewModel = new NavigationViewModel(ConstructNavigationDataProviderMock(), ConstructIAMock().Object);
             viewModel.Load();
             viewModel.Load();
             Assert.Equal(2, viewModel.Friends.Count);

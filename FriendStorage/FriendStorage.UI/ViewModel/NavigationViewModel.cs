@@ -1,7 +1,5 @@
-﻿using FriendStorage.DataAccess;
-using FriendStorage.Model;
-using FriendStorage.UI.DataProvider;
-using System;
+﻿using FriendStorage.UI.DataProvider;
+using Prism.Events;
 using System.Collections.ObjectModel;
 
 namespace FriendStorage.UI.ViewModel
@@ -15,9 +13,13 @@ namespace FriendStorage.UI.ViewModel
     {
         private INavigationDataProvider _dataProvider;
 
-        public NavigationViewModel(INavigationDataProvider dataProvider)
+        public IEventAggregator _eventAggregator;
+
+        public NavigationViewModel(INavigationDataProvider dataProvider,
+            IEventAggregator eventAggregator)
         {
             _dataProvider = dataProvider;
+            _eventAggregator = eventAggregator;
         }
 
         public void Load()
@@ -25,10 +27,10 @@ namespace FriendStorage.UI.ViewModel
             Friends.Clear();
             foreach(var friend in _dataProvider.GetAllFriends())
             {
-                Friends.Add(friend);
+                Friends.Add(new NavigationItemViewModel(friend.Id, friend.DisplayMember, _eventAggregator));
             }
         }
 
-        public ObservableCollection<LookupItem> Friends { get; } = new ObservableCollection<LookupItem>();
+        public ObservableCollection<NavigationItemViewModel> Friends { get; } = new ObservableCollection<NavigationItemViewModel>();
     }
 }
