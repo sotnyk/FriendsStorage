@@ -3,11 +3,6 @@ using FriendStorage.UI.DataProvider;
 using FriendStorage.UI.ViewModel;
 using FriendStorage.UITests.Extensions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace FriendStorage.UITests.ViewModel
@@ -45,5 +40,44 @@ namespace FriendStorage.UITests.ViewModel
             Assert.True(fired);
         }
 
+        [Fact]
+        public void ShouldDisableSaveCommandWhenFriendIsLoaded()
+        {
+            _viewModel.Load(_friendId);
+            Assert.False(_viewModel.SaveCommand.CanExecute(null));
+        }
+
+        [Fact]
+        public void ShouldEnableSaveCommandWhenFriendIsChanged()
+        {
+            _viewModel.Load(_friendId);
+            _viewModel.Friend.FirstName = "Changed";
+            Assert.True(_viewModel.SaveCommand.CanExecute(null));
+        }
+
+        [Fact]
+        public void ShouldDisableSaveCommandWithoutLoad()
+        {
+            Assert.False(_viewModel.SaveCommand.CanExecute(null));
+        }
+
+        [Fact]
+        public void ShouldRaiseCanExecuteChangedForSaveCommandFriendIsChanged()
+        {
+            _viewModel.Load(_friendId);
+            var fired = false;
+            _viewModel.SaveCommand.CanExecuteChanged += (s, e) => fired = true;
+            _viewModel.Friend.FirstName = "Changed";
+            Assert.True(fired);
+        }
+
+        [Fact]
+        public void ShouldRaiseCanExecuteChangedForSaveCommandAfterLoad()
+        {
+            var fired = false;
+            _viewModel.SaveCommand.CanExecuteChanged += (s, e) => fired = true;
+            _viewModel.Load(_friendId);
+            Assert.True(fired);
+        }
     }
 }
