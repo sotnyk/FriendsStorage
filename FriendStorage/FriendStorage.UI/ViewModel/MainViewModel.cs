@@ -1,10 +1,12 @@
 ﻿using FriendStorage.DataAccess;
+using FriendStorage.UI.Command;
 using FriendStorage.UI.DataProvider;
 using FriendStorage.UI.Events;
 using Prism.Events;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace FriendStorage.UI.ViewModel
 {
@@ -18,6 +20,8 @@ namespace FriendStorage.UI.ViewModel
         public ObservableCollection<IFriendEditViewModel> FriendEditViewModels { get; }
             = new ObservableCollection<IFriendEditViewModel>();
 
+        public ICommand CloseFriendTabCommand { get; private set; }
+
 
         public MainViewModel(INavigationViewModel navigationViewModel,
             Func<IFriendEditViewModel> friendEditViewModelFactory,
@@ -27,6 +31,13 @@ namespace FriendStorage.UI.ViewModel
             _friendEditViewModelFactory = friendEditViewModelFactory;
             _eventAggregator = eventAggregator;
             eventAggregator.GetEvent<OpenFriendEditViewEvent>().Subscribe(OnOpenFriendEditView);
+            CloseFriendTabCommand = new DelegateCommand(OnCloseFriendTabExecute);
+        }
+
+        private void OnCloseFriendTabExecute(object obj)
+        {
+            var friendEditVm = (IFriendEditViewModel)obj;
+            FriendEditViewModels.Remove(friendEditVm);
         }
 
         private void OnOpenFriendEditView(int friendId)
