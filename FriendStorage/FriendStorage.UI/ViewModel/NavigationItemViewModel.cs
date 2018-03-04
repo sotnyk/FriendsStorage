@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace FriendStorage.UI.ViewModel
 {
-    public class NavigationItemViewModel
+    public class NavigationItemViewModel: ViewModelBase
     {
         public int Id { get; }
         public string DisplayMember { get; set; }
