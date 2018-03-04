@@ -8,7 +8,7 @@ namespace FriendStorage.UI.ViewModel
     public class NavigationItemViewModel
     {
         public int Id { get; }
-        public string DisplayMember { get; }
+        public string DisplayMember { get; set; }
 
         private IEventAggregator _eventAggregator;
 
