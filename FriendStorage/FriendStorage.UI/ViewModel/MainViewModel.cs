@@ -21,7 +21,7 @@ namespace FriendStorage.UI.ViewModel
             = new ObservableCollection<IFriendEditViewModel>();
 
         public ICommand CloseFriendTabCommand { get; private set; }
-
+        public ICommand AddFriendCommand { get; private set; }
 
         public MainViewModel(INavigationViewModel navigationViewModel,
             Func<IFriendEditViewModel> friendEditViewModelFactory,
@@ -32,6 +32,7 @@ namespace FriendStorage.UI.ViewModel
             _eventAggregator = eventAggregator;
             eventAggregator.GetEvent<OpenFriendEditViewEvent>().Subscribe(OnOpenFriendEditView);
             CloseFriendTabCommand = new DelegateCommand(OnCloseFriendTabExecute);
+            AddFriendCommand = new DelegateCommand(OnAddFriendExecute);
         }
 
         private void OnCloseFriendTabExecute(object obj)
@@ -42,14 +43,22 @@ namespace FriendStorage.UI.ViewModel
 
         private void OnOpenFriendEditView(int friendId)
         {
-            var friendEditVm = FriendEditViewModels.FirstOrDefault(f => f.Friend.Id == friendId);
-            if (friendEditVm == null)
-            {
-                friendEditVm = _friendEditViewModelFactory();
-                FriendEditViewModels.Add(friendEditVm);
-                friendEditVm.Load(friendId);
-            }
+            var friendEditVm = FriendEditViewModels.FirstOrDefault(f => f.Friend.Id == friendId) ??
+                CreateAndLoadFriendEditViewModel(friendId);
             SelectedFriendEditViewModel = friendEditVm;
+        }
+
+        private void OnAddFriendExecute(object obj)
+        {
+            SelectedFriendEditViewModel = CreateAndLoadFriendEditViewModel(null);
+        }
+
+        private IFriendEditViewModel CreateAndLoadFriendEditViewModel(int? friendId)
+        {
+            var friendEditVm = _friendEditViewModelFactory();
+            FriendEditViewModels.Add(friendEditVm);
+            friendEditVm.Load(friendId);
+            return friendEditVm;
         }
 
         public void Load()

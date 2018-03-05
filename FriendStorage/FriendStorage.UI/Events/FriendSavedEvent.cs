@@ -3,7 +3,7 @@ using Prism.Events;
 
 namespace FriendStorage.UI.Events
 {
-    public class FriendSavedEvent:PubSubEvent<Friend>
+    public class FriendSavedEvent : PubSubEvent<Friend>
     {
     }
 }

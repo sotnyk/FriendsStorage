@@ -29,8 +29,17 @@ namespace FriendStorage.UI.ViewModel
 
         private void OnFriendSaved(Friend friend)
         {
-            var navigationItem = Friends.Single(n => n.Id == friend.Id);
-            navigationItem.DisplayMember = $"{friend.FirstName} {friend.LastName}";
+            var displayMember = $"{friend.FirstName} {friend.LastName}";
+            var navigationItem = Friends.SingleOrDefault(n => n.Id == friend.Id);
+            if (navigationItem != null)
+            {
+                navigationItem.DisplayMember = displayMember;
+            }
+            else
+            {
+                navigationItem = new NavigationItemViewModel(friend.Id, displayMember, _eventAggregator);
+                Friends.Add(navigationItem);
+            }
         }
 
         public void Load()
