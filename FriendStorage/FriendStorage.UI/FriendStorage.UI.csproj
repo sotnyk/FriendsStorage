@@ -77,6 +77,7 @@
     <Compile Include="DataProvider\NavigationDataProvider.cs" />
     <Compile Include="Events\FriendSavedEvent.cs" />
     <Compile Include="Events\OpenFriendEditViewEvent.cs" />
+    <Compile Include="Events\FriendDeletedEvent.cs" />
     <Compile Include="Startup\BootStrapper.cs" />
     <Compile Include="ViewModel\FriendEditViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
