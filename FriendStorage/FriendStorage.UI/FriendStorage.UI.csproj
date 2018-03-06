@@ -75,6 +75,8 @@
     <Compile Include="DataProvider\IFriendDataProvider.cs" />
     <Compile Include="DataProvider\INavigationDataProvider.cs" />
     <Compile Include="DataProvider\NavigationDataProvider.cs" />
+    <Compile Include="Dialogs\IMessageDialogService.cs" />
+    <Compile Include="Dialogs\MessageDialogService.cs" />
     <Compile Include="Events\FriendSavedEvent.cs" />
     <Compile Include="Events\OpenFriendEditViewEvent.cs" />
     <Compile Include="Events\FriendDeletedEvent.cs" />
