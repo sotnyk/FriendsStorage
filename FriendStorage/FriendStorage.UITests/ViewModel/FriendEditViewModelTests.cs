@@ -90,6 +90,15 @@ namespace FriendStorage.UITests.ViewModel
         }
 
         [Fact]
+        public void ShouldRaiseCanExecuteChangedForDeleteCommandAfterLoad()
+        {
+            var fired = false;
+            _viewModel.DeleteCommand.CanExecuteChanged += (s, e) => fired = true;
+            _viewModel.Load(_friendId);
+            Assert.True(fired);
+        }
+
+        [Fact]
         public void ShouldCallSaveMethodOfDataProviderWhenSaveCommandIsExecuted()
         {
             _viewModel.Load(_friendId);
@@ -130,5 +139,37 @@ namespace FriendStorage.UITests.ViewModel
 
             _dataProviderMock.Verify(dp => dp.GetFriendById(It.IsAny<int>()), Times.Never);
         }
+
+        [Fact]
+        public void ShouldEnableDeleteCommandForExistingFriend()
+        {
+            _viewModel.Load(_friendId);
+            Assert.True(_viewModel.DeleteCommand.CanExecute(null));
+        }
+
+        [Fact]
+        public void ShouldDisableDeleteCommandForNewFriend()
+        {
+            _viewModel.Load(null);
+            Assert.False(_viewModel.DeleteCommand.CanExecute(null));
+        }
+
+        [Fact]
+        public void ShouldDisableDeleteCommandWithoutLoad()
+        {
+            Assert.False(_viewModel.DeleteCommand.CanExecute(null));
+        }
+
+        [Fact]
+        public void ShouldRaiseCanExecuteChangedForDeleteCommandWhenAcceptingChanges()
+        {
+            _viewModel.Load(_friendId);
+            var fired = false;
+            _viewModel.Friend.FirstName = "Changed";
+            _viewModel.DeleteCommand.CanExecuteChanged += (s, e) => fired = true;
+            _viewModel.Friend.AcceptChanges();
+            Assert.True(fired);
+        }
+
     }
 }

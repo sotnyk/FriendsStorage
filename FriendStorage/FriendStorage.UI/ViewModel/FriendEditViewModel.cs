@@ -21,12 +21,18 @@ namespace FriendStorage.UI.ViewModel
         private readonly IFriendDataProvider _dataProvider;
         private readonly IEventAggregator _eventAggregator;
 
+        public ICommand SaveCommand { get; private set; }
+        public ICommand DeleteCommand { get; private set; }
+
+        public FriendWrapper Friend { get; private set; }
+
         public FriendEditViewModel(IFriendDataProvider dataProvider,
             IEventAggregator eventAggregator)
         {
             _dataProvider = dataProvider;
             _eventAggregator = eventAggregator;
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
+            DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
         }
 
         private bool OnSaveCanExecute(object arg)
@@ -41,9 +47,16 @@ namespace FriendStorage.UI.ViewModel
             _eventAggregator.GetEvent<FriendSavedEvent>().Publish(Friend.Model);
         }
 
-        public ICommand SaveCommand { get; private set; }
+        private bool OnDeleteCanExecute(object arg)
+        {
+            if (Friend == null) return false;
+            return Friend.Id > 0;
+        }
 
-        public FriendWrapper Friend { get; private set; }
+        private void OnDeleteExecute(object obj)
+        {
+            throw new NotImplementedException();
+        }
 
         public void Load(int? friendId)
         {
@@ -51,12 +64,18 @@ namespace FriendStorage.UI.ViewModel
                 _dataProvider.GetFriendById(friendId.Value) : new Friend();
             Friend = new FriendWrapper(friend);
             Friend.PropertyChanged += Friend_PropertyChanged;
-            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            InvalidateCommands();
         }
 
         private void Friend_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            InvalidateCommands();
+        }
+
+        private void InvalidateCommands()
+        {
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand)DeleteCommand).RaiseCanExecuteChanged();
         }
     }
 }
